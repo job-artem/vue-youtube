@@ -38,7 +38,7 @@
         <small
             class="helper-text invalid"
             v-else-if="$v.password.$dirty && !$v.password.minLength"
-        >Мінамальна довжина пароля 6 символів! Зараз він {{this.password.length}}</small>
+        >Мінімамальна довжина пароля {{$v.password.$params.minLength.min}} символів! Зараз він {{this.password.length}} </small>
       </div>
     </div>
     <div class="card-action">
@@ -74,6 +74,7 @@ export default {
   },
   methods: {
     submitHandler () {
+      console.log(this.$v.password)
       if (this.$v.$invalid) {
         this.$v.$touch()
         return
