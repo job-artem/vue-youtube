@@ -11,35 +11,34 @@
         >
         <label for="email">Email</label>
         <small
-            class="helper-text invalid"
-            v-if="$v.email.$dirty && !$v.email.required"
-        >Поле емейл не должно быть пустым
-        </small>
-
+          class="helper-text invalid"
+          v-if="$v.email.$dirty && !$v.email.required"
+        >Поле Email не должно быть пустым</small>
         <small
-            class="helper-text invalid"
-            v-else-if="$v.email.$dirty && !$v.email.email"
-        >Пожалуйста введите корректный емайл
-        </small>
+          class="helper-text invalid"
+          v-else-if="$v.email.$dirty && !$v.email.email"
+        >Введите корретный Email</small>
       </div>
       <div class="input-field">
         <input
             id="password"
             type="password"
             v-model.trim="password"
-            :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && $v.password.minLength)}"
+            :class="{invalid: ($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength)}"
         >
         <label for="password">Пароль</label>
         <small
-            class="helper-text invalid"
-            v-if="$v.password.$dirty && !$v.password.required"
-        >Введіть пароль!</small>
-
+          class="helper-text invalid"
+          v-if="$v.password.$dirty && !$v.password.required"
+        >
+          Введите пароль
+        </small>
         <small
-            class="helper-text invalid"
-            v-else-if="$v.password.$dirty && !$v.password.minLength"
-        >Мінімамальна довжина пароля {{ $v.password.$params.minLength.min }} символів! Зараз він
-          {{ this.password.length }} </small>
+          class="helper-text invalid"
+          v-else-if="$v.password.$dirty && !$v.password.minLength"
+        >
+          Пароль должен быть {{$v.password.$params.minLength.min}} символов. Сейчас он {{password.length}}
+        </small>
       </div>
       <div class="input-field">
         <input
@@ -50,13 +49,15 @@
         >
         <label for="name">Имя</label>
         <small
-            class="helper-text invalid"
-            v-if="$v.name.$dirty && !$v.name.required"
-        >Введіть будь ласка ім'я!</small>
+          class="helper-text invalid"
+          v-if="$v.name.$dirty && !$v.name.required"
+        >
+          Введите ваше имя
+        </small>
       </div>
       <p>
         <label>
-          <input type="checkbox" v-model="agree"/>
+          <input type="checkbox" v-model="agree" />
           <span>С правилами согласен</span>
         </label>
       </p>
@@ -80,9 +81,8 @@
   </form>
 </template>
 
-
 <script>
-import { email, minLength, required } from 'vuelidate/lib/validators'
+import {email, required, minLength} from 'vuelidate/lib/validators'
 
 export default {
   name: 'register',
@@ -93,20 +93,14 @@ export default {
     agree: false
   }),
   validations: {
-    email: {
-      email,
-      required
-    },
-    password: {
-      required,
-      minLength: minLength(8)
-    },
-    name: { required },
-    agree: { checked: v => v }
+    email: {email, required},
+    password: {required, minLength: minLength(6)},
+    name: {required},
+    agree: {checked: v => v}
   },
   methods: {
-    submitHandler () {
-      if (this.$v.invalid) {
+    submitHandler() {
+      if (this.$v.$invalid) {
         this.$v.$touch()
         return
       }
@@ -116,11 +110,11 @@ export default {
         password: this.password,
         name: this.name
       }
+
       console.log(formData)
+
       this.$router.push('/')
     }
   }
 }
-
-
 </script>
