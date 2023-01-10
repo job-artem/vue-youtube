@@ -45,10 +45,14 @@
         <input
             id="name"
             type="text"
-            class="validate"
+            v-model.trim="name"
+            :class="{invalid: ($v.name.$dirty && !$v.name.required)}"
         >
         <label for="name">Имя</label>
-        <small class="helper-text invalid">Name</small>
+        <small
+            class="helper-text invalid"
+            v-if="$v.name.$dirty && !$v.name.required"
+        >Введіть будь ласка ім'я!</small>
       </div>
       <p>
         <label>
@@ -101,8 +105,11 @@ export default {
     agree: { checked: v => v }
   },
   methods: {
-    submitHandler() {
-      if ( )
+    submitHandler () {
+      if (this.$v.invalid) {
+        this.$v.$touch()
+        return
+      }
     }
   }
 }
