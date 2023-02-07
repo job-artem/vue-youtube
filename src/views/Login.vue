@@ -38,7 +38,8 @@
         <small
             class="helper-text invalid"
             v-else-if="$v.password.$dirty && !$v.password.minLength"
-        >Мінімамальна довжина пароля {{$v.password.$params.minLength.min}} символів! Зараз він {{this.password.length}} </small>
+        >Мінімамальна довжина пароля {{ $v.password.$params.minLength.min }} символів! Зараз він
+          {{ this.password.length }} </small>
       </div>
     </div>
     <div class="card-action">
@@ -61,8 +62,9 @@
 </template>
 
 <script>
-import {email, required, minLength} from 'vuelidate/lib/validators'
+import { email, required, minLength } from 'vuelidate/lib/validators'
 import messages from '@/utils/messages'
+
 export default {
   name: 'login',
   data: () => ({
@@ -70,8 +72,14 @@ export default {
     password: '',
   }),
   validations: {
-    email: {email, required},
-    password: {required, minLength: minLength(8)}
+    email: {
+      email,
+      required
+    },
+    password: {
+      required,
+      minLength: minLength(8)
+    }
   },
   mounted () {
     if (messages[this.$route.query.message]) {
@@ -79,13 +87,24 @@ export default {
     }
   },
   methods: {
-    submitHandler () {
-      console.log(this.$v.password)
+    async submitHandler () {
+
       if (this.$v.$invalid) {
         this.$v.$touch()
         return
       }
-      this.$router.push('/')
+
+      const formData = {
+        email: this.email,
+        password: this.password
+      }
+
+      try {
+        await this.$store.dispatch('login', formData)
+        this.$router.push('/')
+      } catch (e) {
+
+      }
     }
   }
 }
